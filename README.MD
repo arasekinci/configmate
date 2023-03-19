@@ -12,7 +12,7 @@ or
 yarn add dotconfig
 ```
 
-## Config Module
+## Config Function
 
 This module provides a function for loading configuration files in different formats (json, js, ts, ini, and yaml).
 
@@ -134,8 +134,9 @@ Use the returned settings object as needed.
 
 Assume we have the following JSON files in a directory named .mysettings/:
 
+.mysettings/database.json
+
 ```json
-// .mysettings/database.json
 {
   "host": "localhost",
   "port": 3306,
@@ -144,8 +145,9 @@ Assume we have the following JSON files in a directory named .mysettings/:
 }
 ```
 
+.mysettings/logging.json
+
 ```json
-// .mysettings/logging.json
 {
   "level": "info",
   "path": "/var/log/myapp.log"
