@@ -1,0 +1,10 @@
+{
+  "name": ".apprc.json",
+  "description": "You can write the configuration in JSON format.",
+  "version": 1,
+  "plugins": [
+    "x",
+    "y",
+    "z"
+  ]
+}
