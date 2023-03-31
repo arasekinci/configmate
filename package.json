@@ -2,14 +2,30 @@
   "name": "dotconfig",
   "version": "1.0.0",
   "description": "Loads configuration variables for Node.js projects from local files.",
+  "keywords": [
+    "configs",
+    "settings"
+  ],
+  "bugs": "https://github.com/arasekinci/dotconfig/issues",
+  "license": "MIT",
+  "author": "Aras Ekinci",
+  "maintainers": [
+    "Aras Ekinci"
+  ],
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arasekinci/dotconfig.git"
+  },
   "scripts": {
     "build": "tsc",
     "lint": "eslint src/**/*",
     "start": "ts-node ./src/index.ts"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2",
     "ini": "^3.0.1",
