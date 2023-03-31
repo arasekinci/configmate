@@ -1,12 +1,12 @@
 {
-  "name": "dotconfig",
+  "name": "configmate",
   "version": "1.0.0",
   "description": "Loads configuration variables for Node.js projects from local files.",
   "keywords": [
     "configs",
     "settings"
   ],
-  "bugs": "https://github.com/arasekinci/dotconfig/issues",
+  "bugs": "https://github.com/arasekinci/configmate/issues",
   "license": "MIT",
   "author": "Aras Ekinci",
   "maintainers": [
@@ -19,7 +19,7 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/arasekinci/dotconfig.git"
+    "url": "https://github.com/arasekinci/configmate.git"
   },
   "scripts": {
     "build": "tsc",

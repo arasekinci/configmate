@@ -1,15 +1,15 @@
-# DotConfig
+# Configmate
 
 ## Installation
 
 To use this module, you need to have Node.js installed on your system. You can then install the module using npm or yarn:
 
 ```
-npm install --save dotconfig
+npm install --save configmate
 ```
 or
 ```
-yarn add dotconfig
+yarn add configmate
 ```
 
 ## Config Function
@@ -21,9 +21,9 @@ This module provides a function for loading configuration files in different for
 To load a configuration file, simply call the config function with the name of the configuration file (without the file extension):
 
 ```js
-import dotconfig from 'dotconfig'
+import configmate from 'configmate'
 
-const config = dotconfig.config('myconfig')
+const config = configmate.config('myconfig')
 ```
 
 By default, the config function looks for configuration files in the following locations:
@@ -123,9 +123,9 @@ This function reads JSON files from a specified directory and returns them as a 
 Import the function and call it with the directory path:
 
 ```js
-import dotconfig from 'dotconfig'
+import configmate from 'configmate'
 
-const settings = dotconfig.setting('.mysettings')
+const settings = configmate.setting('.mysettings')
 ```
 
 Use the returned settings object as needed.
