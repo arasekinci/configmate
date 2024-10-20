@@ -1,23 +1,24 @@
 import fs from 'node:fs'
+import path from 'node:path'
 
-export function settings<T>(directory: string): T | undefined {
-  const settings: Record<string, unknown> = {}
+export function settings<T>(dirname: string): T | void {
+  if (fs.existsSync(dirname)) {
+    const result: Record<string, unknown> = {}
+    const dirents = fs.readdirSync(dirname)
 
-  if (fs.existsSync(directory)) {
-    const files = fs.readdirSync(directory)
+    for (const dirent of dirents) {
+      const filepath = path.join(dirname, dirent)
+      const file = path.parse(filepath)
 
-    for (const file of files) {
-      const path = `${process.cwd()}/${directory}/${file}`
-
-      if (fs.statSync(path).isFile()) {
+      if (fs.statSync(filepath).isFile() && file.ext === '.json') {
         try {
-          settings[file.replace('.json', '')] = require(path)
+          result[file.name] = require(filepath)
         } catch (err) {
           console.log(err)
         }
       }
     }
 
-    return settings as T
+    return result as T
   }
 }

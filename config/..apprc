@@ -1,7 +1,0 @@
-name: .apprc
-description: You can write the configuration in YAML, JSON and INI format.
-version: 1
-plugins:
-  - x
-  - y
-  - z

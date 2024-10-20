@@ -1,7 +1,0 @@
-name: .apprc.yaml
-description: You can write the configuration in YAML format.
-version: 1
-plugins:
-  - x
-  - y
-  - z

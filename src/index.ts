@@ -5,6 +5,3 @@ export default {
   config,
   settings,
 }
-
-console.log(config('app', ['config']))
-console.log(settings('.vscode'))

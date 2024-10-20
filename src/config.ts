@@ -3,53 +3,43 @@ import chalk from 'chalk'
 import ini from 'ini'
 import yaml from 'yaml'
 
-const filelist: {
-  type: 'detect' | 'ini' | 'yaml' | 'json' | 'js' | 'ts'
-  path: string
-}[] = [
-  { type: 'detect', path: `.[name]rc` },
-  { type: 'ini', path: `.[name]rc.ini` },
-  { type: 'yaml', path: `.[name]rc.yml` },
-  { type: 'yaml', path: `.[name]rc.yaml` },
-  { type: 'json', path: `.[name]rc.json` },
-  { type: 'json', path: `config.[name].json` },
-  { type: 'js', path: `config.[name].js` },
-  { type: 'ts', path: `config.[name].ts` },
-]
+import type { ConfigFileType, ConfigFile } from './config.type'
 
-function parse<T>(content: string): T {
-  if (/^\s*{/.test(content)) {
-    return JSON.parse(content)
-  }
+export function config<T>(name: string, types: ConfigFileType[]): T | void {
+  let files: ConfigFile[] = [
+    { type: 'json', path: `${name}.config.json` },
+    { type: 'js', path: `${name}.config.js` },
+    { type: 'ts', path: `${name}.config.ts` },
+    { type: 'ini', path: `.${name}rc` },
+    { type: 'ini', path: `.${name}rc.ini` },
+    { type: 'yaml', path: `.${name}rc.yml` },
+    { type: 'yaml', path: `.${name}rc.yaml` },
+    { type: 'json', path: `.${name}rc.json` },
+  ]
 
-  if (/:/.test(content)) {
-    return yaml.parse(content)
-  }
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
 
-  return ini.parse(content) as T
-}
-
-export function config<T>(name: string, paths?: string[]): T | undefined {
-  if (paths) {
-    const files = [...filelist]
-
-    for (const path of paths) {
-      for (const file of files) {
-        filelist.push({
-          type: file.type,
-          path: `${path}/${file.path}`,
-        })
-      }
+    if (types && !types.includes(file.type)) {
+      delete files[i]
     }
   }
 
-  for (const file of filelist) {
-    const path = file.path.replace('[name]', name)
+  files = files.filter(Boolean)
+  files = files.reduce((filelist, file) => {
+    filelist.push({
+      type: file.type,
+      path: `config/${file.path}`,
+    })
 
+    return filelist
+  }, files)
+
+  for (const { type, path } of files) {
     if (fs.existsSync(path)) {
       const content = fs.readFileSync(path, 'utf8')
 
-      if (file.type === 'json') {
+      if (type === 'json' || (type === 'ini' && /^\s*{/.test(content))) {
         try {
           return JSON.parse(content) as T
         } catch {
@@ -57,24 +47,25 @@ export function config<T>(name: string, paths?: string[]): T | undefined {
         }
       }
 
-      if (file.type === 'js') {
+      if (type === 'js') {
         try {
-          return require(path)
-        } catch {
+          return require(process.cwd() + '/' + path)
+        } catch (err) {
+          console.log(err)
           console.log(chalk.red('error'), `${path} file format is not js.`)
         }
       }
 
-      if (file.type === 'ts') {
+      if (type === 'ts') {
         try {
           // eslint-disable-next-line @typescript-eslint/no-var-requires
-          return (require(path) as { default: T }).default
+          return (require(process.cwd() + '/' + path) as { default: T }).default
         } catch {
           console.log(chalk.red('error'), `${path} file format is not ts.`)
         }
       }
 
-      if (file.type === 'yaml') {
+      if (type === 'yaml' || (type === 'ini' && /:/.test(content))) {
         try {
           return yaml.parse(content) as T
         } catch {
@@ -82,22 +73,11 @@ export function config<T>(name: string, paths?: string[]): T | undefined {
         }
       }
 
-      if (file.type === 'ini') {
+      if (type === 'ini') {
         try {
           return ini.parse(content) as T
         } catch {
           console.log(chalk.red('error'), `${path} file format is not ini.`)
-        }
-      }
-
-      if (file.type === 'detect') {
-        try {
-          return parse(content) as T
-        } catch {
-          console.log(
-            chalk.red('error'),
-            `${path} file format is corrupt or corrupt, please check.`
-          )
         }
       }
     }

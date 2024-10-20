@@ -28,14 +28,14 @@ const config = configmate.config('myconfig')
 
 By default, the config function looks for configuration files in the following locations:
 
+- myconfig.config.json
+- myconfig.config.js
+- myconfig.config.ts
 - .myconfigrc
 - .myconfigrc.ini
 - .myconfigrc.yml
 - .myconfigrc.yaml
 - .myconfigrc.json
-- config.myconfig.json
-- config.myconfig.js
-- config.myconfig.ts
 
 ### File Examples
 
